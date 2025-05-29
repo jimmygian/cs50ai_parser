@@ -1,6 +1,5 @@
 import nltk
 import sys
-nltk.download('punkt_tab')
 
 TERMINALS = """
 Adj -> "country" | "dreadful" | "enigmatical" | "little" | "moist" | "red"
@@ -16,7 +15,9 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> N V
+S -> NP VP | NP VP NP | NP VP NP NP
+NP -> N | Det N | P N
+VP -> V
 """
 
 grammar = nltk.CFG.fromstring(NONTERMINALS + TERMINALS)
@@ -36,6 +37,7 @@ def main():
 
     # Convert input into list of words
     s = preprocess(s)
+    print(s)
 
     # Attempt to parse sentence
     try:
@@ -47,13 +49,14 @@ def main():
         print("Could not parse sentence.")
         return
 
-    # Print each tree with noun phrase chunks
-    for tree in trees:
-        tree.pretty_print()
+    print(trees)
+    # # Print each tree with noun phrase chunks
+    # for tree in trees:
+    #     tree.pretty_print()
 
-        print("Noun Phrase Chunks")
-        for np in np_chunk(tree):
-            print(" ".join(np.flatten()))
+    #     print("Noun Phrase Chunks")
+    #     for np in np_chunk(tree):
+    #         print(" ".join(np.flatten()))
 
 
 def preprocess(sentence):
@@ -72,9 +75,9 @@ def preprocess(sentence):
             preprocessed_sentence += char
 
     # Split Sentence
-    tokenized_sentence = preprocessed_sentence.split()
+    # tokenized_sentence = preprocessed_sentence.split()
+    tokenized_sentence = nltk.word_tokenize(preprocessed_sentence)
     tokenized_sentence = [s for s in tokenized_sentence if s != ""]
-    # # tokenized_sentene = nltk.word_tokenize(sentence)
 
     # print(tokenized_sentence)
     return tokenized_sentence
