@@ -1,5 +1,6 @@
-import nltk
 import sys
+
+import nltk
 
 TERMINALS = """
 Adj -> "country" | "dreadful" | "enigmatical" | "little" | "moist" | "red"
@@ -66,7 +67,7 @@ def preprocess(sentence):
     and removing any word that does not contain at least one alphabetic
     character.
     """
-    #Clean Sentence
+    # Clean Sentence
     preprocessed_sentence = ""
     for char in sentence:
         if char.isalpha():
@@ -83,7 +84,6 @@ def preprocess(sentence):
     return tokenized_sentence
 
 
-
 def np_chunk(tree):
     """
     Return a list of all noun phrase chunks in the sentence tree.
@@ -91,7 +91,18 @@ def np_chunk(tree):
     whose label is "NP" that does not itself contain any other
     noun phrases as subtrees.
     """
-    raise NotImplementedError
+
+    noun_phrases = []
+    for subtree in tree.subtrees():
+        # Check if the subtree is labeled as "NP"
+        if subtree.label() == "NP":
+            # Check if there are no other "NP" subtrees within this subtree
+            if not any(
+                child.label() == "NP"
+                for child in subtree.subtrees(lambda t: t != subtree)
+            ):
+                noun_phrases.append(subtree)
+    return noun_phrases
 
 
 if __name__ == "__main__":
