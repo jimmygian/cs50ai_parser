@@ -15,10 +15,10 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> S Conj S | NP VP | NP VP NP
+S -> S Conj S | NP VP | NP VP NP | VP NP
 PP -> P NP | NP P
 NP -> N | Det NP | Det NP NP | Adj NP | N Adv
-VP -> V | Adv V | V Adv | VP PP | VP Conj VP
+VP -> V | Adv V | V Adv | VP PP
 """
 
 grammar = nltk.CFG.fromstring(NONTERMINALS + TERMINALS)
@@ -54,9 +54,9 @@ def main():
     for tree in trees:
         tree.pretty_print()
 
-    #     print("Noun Phrase Chunks")
-    #     for np in np_chunk(tree):
-    #         print(" ".join(np.flatten()))
+        print("Noun Phrase Chunks")
+        for np in np_chunk(tree):
+            print(" ".join(np.flatten()))
 
 
 def preprocess(sentence):
