@@ -15,9 +15,10 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> NP VP | NP VP NP | NP VP NP NP
-NP -> N | Det N | P N
-VP -> V
+S -> S Conj S | NP VP | NP VP NP
+PP -> P NP | NP P
+NP -> N | Det NP | Det NP NP | Adj NP | N Adv
+VP -> V | Adv V | V Adv | VP PP | VP Conj VP
 """
 
 grammar = nltk.CFG.fromstring(NONTERMINALS + TERMINALS)
@@ -49,10 +50,9 @@ def main():
         print("Could not parse sentence.")
         return
 
-    print(trees)
-    # # Print each tree with noun phrase chunks
-    # for tree in trees:
-    #     tree.pretty_print()
+    # Print each tree with noun phrase chunks
+    for tree in trees:
+        tree.pretty_print()
 
     #     print("Noun Phrase Chunks")
     #     for np in np_chunk(tree):
